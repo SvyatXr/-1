@@ -8,6 +8,7 @@ struct Button
     int w;
     int h;
     const char* text;
+    bool visible;
 
    void draw()
    {
@@ -20,7 +21,7 @@ struct Button
 
   bool click()
   {
-   return (txMouseX()>x && txMouseX()<x+w && txMouseY()>y && txMouseY()<y+h && txMouseButtons() == 1);
+   return (txMouseX()>x && txMouseX()<x+w && txMouseY()>y && txMouseY()<y+h && txMouseButtons() == 1 && visible);
 
 
 
@@ -31,41 +32,108 @@ struct Button
 //!GetAsyncKeyState(VK_ESCAPE)
 int main()
 {
-txCreateWindow (800, 600);
+txCreateWindow (1370, 710);
 txTextCursor (false);
 
-Button btn1 = {100, 100, 220, 150, "ÈÃÐÀÒÜ"};
-Button btn2 = {100, 300, 220, 150, "ÂÛÕÎÄ"};
-Button btn3 = {450, 100, 220, 150, "Î ÈÃÐÅ"};
+string PAGE = "menu";
+
+Button btn1 = {200, 100, 220, 150, "ÈÃÐÀÒÜ", true};
+Button btn2 = {200, 300, 220, 150, "ÂÛÕÎÄ", true};
+Button btn3 = {750, 100, 220, 150, "Î ÈÃÐÅ", true};
+Button btn4 = {750, 300, 220, 150, "ÍÀÑÒÐÎÉÊÈ", true};
 
     while(!btn2.click())
     {
-     txSetFillColor (TX_BLACK);
      txClear();
      txBegin();
 
-     btn1.draw();
-     btn2.draw();
-     btn3.draw();
+    if(PAGE == "menu")
+    {
 
-     if(btn1.click())
+        btn1.draw();
+        btn2.draw();
+        btn3.draw();
+        btn4.draw();
+
+        btn1.visible = true;
+        btn2.visible = true;
+        btn3.visible = true;
+        btn4.visible = true;
+
+        if(btn1.click())
+        {
+         PAGE="ÈÃÐÀÒÜ";
+        btn1.visible = false;
+        btn2.visible = false;
+        btn3.visible = false;
+        btn4.visible = false;
+        }
+
+        if(btn3.click())
+        {
+         PAGE="Î ÈÃÐÅ";
+        btn1.visible = false;
+        btn2.visible = false;
+        btn3.visible = false;
+        btn4.visible = false;
+        }
+        if(btn4.click())
+        {
+         PAGE="ÍÀÑÒÐÎÉÊÈ";
+        btn1.visible = false;
+        btn2.visible = false;
+        btn3.visible = false;
+        btn4.visible = false;
+        }
+     txSetFillColor (TX_BLACK);
+
+    }
+
+
+     if(PAGE == "ÍÀÑÒÐÎÉÊÈ")
      {
-      txSetFillColor (TX_WHITE);
-      txCircle(400, 300, 70);
+      txSetFillColor(TX_BLACK);
+      txTextOut(600, 20, "ÍÀÑÒÐÎÉÊÈ");
+      if(GetAsyncKeyState(VK_ESCAPE))
+      {
+       PAGE="menu";
+      }
+      txSetFillColor (TX_LIGHTBLUE);
+
      }
 
-     if(btn2.click())
+     if(PAGE == "Î ÈÃÐÅ")
      {
-
-      txDestroyWindow();
+      txSetFillColor(TX_BLACK);
+      txTextOut(600, 20, "O ÈÃÐÅ");
+      if(GetAsyncKeyState(VK_ESCAPE))
+      {
+       PAGE="menu";
+      }
+      txSetFillColor (TX_LIGHTGREEN);
      }
+
+     if(PAGE == "ÈÃÐÀÒÜ")
+     {
+      txSetFillColor(TX_BLACK);
+      txTextOut(600, 20, "ÇÀÃÐÓÇÊÀ...");
+      if(GetAsyncKeyState(VK_ESCAPE))
+      {
+       PAGE="menu";
+      }
+      txSetFillColor (TX_YELLOW);
+     }
+
+
+
+
 
      txEnd();
      txSleep(10);
 
 
     }
-
+txDisableAutoPause();
 return 0;
 }
 
