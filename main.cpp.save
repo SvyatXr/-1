@@ -110,8 +110,8 @@ Button btn4 = {750, 300, 220, 150, "Õ¿—“–Œ… »", true};
       {
        PAGE="menu";
       }
-      txSetFillColor (TX_);
-     }
+      txSetFillColor (TX_LIGHTGREEN);
+     }                                                    
 
      if(PAGE == "»√–¿“‹")
      {
